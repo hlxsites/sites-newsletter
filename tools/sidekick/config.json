@@ -3,6 +3,20 @@
     "project": "sites-newsletter",
     "plugins": [
         {
+            "id": "ajo-integration",
+            "title": "AJO",
+            "environments": [
+                "dev",
+                "live"
+            ],
+            "event": "login",
+            "url": "/tools/ajo/ajo-integration.html",
+            "passConfig": true,
+            "passReferrer": true,
+            "isPalette": true,
+            "paletteRect": "top: 54px; left: 5px; bottom: 5px; width: 450px; height: 430px; border-radius: var(--hlx-sk-button-border-radius); overflow: hidden; resize: both;"
+        },
+        {
             "id": "copyHtml",
             "title": "Copy E-Mail",
             "environments": [
