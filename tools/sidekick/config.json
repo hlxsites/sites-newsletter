@@ -10,7 +10,7 @@
                 "live"
             ],
             "event": "login",
-            "url": "/tools/ajo/ajo-integration.html",
+            "url": "/tools/ajo-integration/ajo-integration.html",
             "passConfig": true,
             "passReferrer": true,
             "isPalette": true,
