@@ -241,10 +241,20 @@ function reduceMjml(mjml) {
 
 export function decorateDefaultContent(wrapper, { textClass = '', buttonClass = '', imageClass = '' } = {}) {
   return [...wrapper.children]
-    .reduce((mjml, par) => {
+    .reduce(async (promise, par) => {
+      const mjml = await promise;
       const img = par.querySelector('img');
       if (img) {
-        return `${mjml}<mj-image mj-class="${imageClass}" src="${img.src}" />`;
+        const response = await window.fetch(img.src);
+        const blob = await response.blob();
+
+        const base64Image = await new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onloadend = () => resolve(reader.result);
+          reader.onerror = reject;
+          reader.readAsDataURL(blob);
+        });
+        return `${mjml} <mj-image mj-class="${imageClass}" src="${base64Image}" alt="${img.alt}" />`;
       }
       if (mjml.endsWith('</mj-text>')) {
         return `${mjml.substring(0, mjml.length - 10)}${par.outerHTML}</mj-text>`;
@@ -273,7 +283,7 @@ export async function toMjml(main) {
             return Promise.resolve([`
             <mj-section mj-class="mj-content-section">
               <mj-column mj-class="mj-content-column ${wrapper.parentElement.getAttribute('columns')}">
-                ${decorateDefaultContent(
+                ${await decorateDefaultContent(
     wrapper,
     { textClass: 'mj-content-text', imageClass: 'mj-content-image', buttonClass: 'mj-content-button' },
   )}
